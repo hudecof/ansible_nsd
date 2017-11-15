@@ -1,0 +1,10 @@
+---
+# handlers file for nsd
+- name: test config nsd
+  command: "{{ nsd_bin_check_conf }} {{ nsd_dir_etc }}/nsd.conf"
+
+- name: restart nsd
+  service:
+    name: "{{ nsd_service }}"
+    state: restarted
+  when: not nsd_test

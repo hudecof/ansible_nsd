@@ -1,0 +1,27 @@
+---
+
+nsd_conf_keys:
+  test:
+    algorithm: hmac-sha256
+    secret: aaaaaabbbbbbccccccdddddd
+
+nsd_conf_zones:
+  example.com:
+    include-pattern: test
+
+nsd_conf_patterns:
+  test:
+    'zonefile': 'zones.d/%s'
+    'provide-xfr': ['0.0.0.0/0 test', '::0/0 test']
+
+nsd_conf_server:
+  'username': "{{ nsd_user }}"
+  'do-ip4': 'yes'
+  'do-ip6': 'no'
+  'hide-version': 'yes'
+  'zonesdir': "{{ nsd_dir_etc }}"
+  'database': "{{ nsd_dir_db }}/nsd.db"
+  'pidfile': "{{ nsd_dir_run }}/nsd.pid"
+  'xfrdfile': "{{ nsd_dir_state }}/xfrd.state"
+  'verbosity': 0
+  'ip-address': ['127.0.0.1']

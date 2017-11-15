@@ -1,0 +1,37 @@
+---
+# defaults file for nsd
+
+nsd_packages: "{{ __nsd_packages }}"
+nsd_user: "{{ __nsd_user }}"
+nsd_group: "{{ __nsd_group }}"
+nsd_service: "{{ __nsd_service }}"
+nsd_service_state: started
+nsd_service_enabled: yes
+
+nsd_backup: False
+nsd_test: False
+
+nsd_dir_etc: "{{ __nsd_dir_etc }}"
+nsd_dir_db: " {{ __nsd_dir_db }}"
+nsd_dir_run: "{{ __nsd_dir_run }}"
+nsd_dir_state: "{{ __nsd_dir_state }}"
+
+nsd_bin_control_setup: "{{ __nsd_bin_control_setup }}"
+nsd_bin_check_conf: "{{ __nsd_bin_check_conf }}"
+
+nsd_conf_zones: {}
+nsd_conf_keys: {}
+nsd_conf_patterns: {}
+nsd_conf_server:
+  'username': "{{ nsd_user }}"
+  'do-ip4': 'yes'
+  'do-ip6': 'no'
+  'hide-version': 'yes'
+  'zonesdir': "{{ nsd_dir_etc }}"
+  'database': "{{ nsd_dir_db }}/nsd.db"
+  'pidfile': "{{ nsd_dir_run }}/nsd.pid"
+  'xfrdfile': "{{ nsd_dir_state }}/xfrd.state"
+
+nsd_conf_remote:
+  'control-enable': 'yes'
+  'control-interface': ['127.0.0.1', '::1']

@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+{% from '_helper_macros.j2' import config_value %}
+
+server:
+{% for key, value in nsd_conf_server.items() %}
+{{ config_value(key, value, ident=1) -}}
+{% endfor %}

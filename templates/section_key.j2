@@ -1,0 +1,8 @@
+{{ ansible_managed | comment }}
+{% from '_helper_macros.j2' import config_value %}
+
+key:
+{{ config_value('name', key.key, ident=1) -}}
+{% for key, value in key.value.items() %}
+{{ config_value(key, value, ident=1) -}}
+{% endfor %}

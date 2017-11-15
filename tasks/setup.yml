@@ -1,0 +1,22 @@
+---
+
+- name: create directories
+  file:
+    path: "{{nsd_dir_etc}}/{{ directory }}"
+    state: directory
+    owner: "{{ nsd_user }}"
+    group: "{{ nsd_group }}"
+    mode: 0750
+  with_items:
+    - main.d
+  loop_control:
+    loop_var: directory
+
+- name: check nsd-control
+  stat:
+    path: '{{ nsd_dir_etc }}/nsd_control.key'
+  register: control_key
+
+- name: init nsd-control
+  command: "{{ nsd_bin_control_setup }}"
+  when: not control_key.stat.exists

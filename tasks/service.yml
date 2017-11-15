@@ -1,0 +1,7 @@
+---
+- name: ensure nsd started/stopped
+  service:
+    name: "{{ nsd_service }}"
+    state: "{{ nsd_service_state }}"
+    enabled: "{{ nsd_service_enabled }}"
+  when: not nsd_test

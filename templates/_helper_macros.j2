@@ -1,0 +1,11 @@
+{% macro config_value(name, value=None, ident=0) -%}
+{% if value | islist %}
+{% for v in value|default([], true) %}
+{{"\t" * ident}}{{ name }}: {{ v }}
+{% endfor %}
+{% elif value | isnone %}
+#{{"\t" * ident}}{{ name }}: {{ value }}
+{% else%}
+{{"\t" * ident}}{{ name }}: {{ value }}
+{% endif %}
+{%- endmacro %}

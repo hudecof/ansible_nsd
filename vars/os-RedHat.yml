@@ -1,0 +1,16 @@
+---
+# list of packages to install
+__nsd_packages:
+  - {'name': 'bind', 'state': 'absent'}
+  - {'name': 'openssl', 'state': 'present'}
+  - {'name': 'nsd', 'state': 'present'}
+
+__nsd_user: nsd
+__nsd_group: nsd
+__nsd_service: nsd
+__nsd_dir_etc: /etc/nsd
+__nsd_dir_db: /var/lib/nsd
+__nsd_dir_run: /var/run/nsd
+__nsd_dir_state: "{{ nsd_dir_db }}"
+__nsd_bin_control_setup: /usr/sbin/nsd-control-setup
+__nsd_bin_check_conf: /usr/sbin/nsd-checkconf
