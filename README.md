@@ -1,31 +1,139 @@
-Role Name
-=========
+# NSD
 
-A brief description of the role goes here.
+Install and configure NSD (dns) server.re.
 
-Requirements
-------------
+# Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- **ansible** version minimal is **2.3**
+- role **hudecof.filter-plugins** adds some jinja filters
+- for **RedHat** based distribution  **EPEL** repository is needed
+ 
+# Role Variables
 
-Role Variables
---------------
+All default variables are defined in the **defaults/main.yml**.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+**OS** specific variables are in **vars/os-<distribution>.yml** with `__` prefix. See **defaults** which could be overwritten.
 
-Dependencies
-------------
+## General
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- `nsd_service_state` define service state, defaults to **started**
+- `nsd_service_enabled` define service enable state, defaults to **yes**
+- `nsd_backup` define wheather create config backup files, defaults to **False**
+- `nsd_test` dfine, whearther the role is in testing mode, defaults to **False**
+
+## OS spececific
+
+- `nsd_packages` list of packages to install/remove, defaults to **__nsd_packages**
+- `nsd_user` usename to run service under, defaults to **__nsd_user**
+- `nsd_group` group name to run service under, defaults to **__nsd_group**
+- `nsd_service` service name, defaults to **__nsd_service**
+- `nsd_dir_etc` configuration directory, defaults to **__nsd_dir_etc**
+- `nsd_dir_db` database directory, defaults to **__nsd_dir_db**
+- `nsd_dir_run` pid file directory, defaults to **__nsd_dir_run**
+- `nsd_dir_state` state directory, defaults to **__nsd_dir_state**
+- `nsd_bin_control_setup` path to binary **nsd-control-setup**
+- `nsd_bin_check_conf` path to binary **nsd-checkconf**
+
+
+## Server Configuration
+
+I will provide sample configuration. The dictionaty keys are configuration parameters for the NSD, so please see **nsd.conf(5)** maunal page.
+
+```
+nsd_conf_keys:
+  test:
+    algorithm: hmac-sha256
+    secret: aaaaaabbbbbbccccccdddddd
+
+nsd_conf_zones:
+  example.com:
+    include-pattern: test
+
+nsd_conf_patterns:
+  test:
+    'zonefile': 'zones.d/%s'
+    'provide-xfr': ['0.0.0.0/0 test', '::0/0 test']
+
+nsd_conf_server:
+  'username': "{{ nsd_user }}"
+  'do-ip4': 'yes'
+  'do-ip6': 'no'
+  'hide-version': 'yes'
+  'zonesdir': "{{ nsd_dir_etc }}"
+  'database': "{{ nsd_dir_db }}/nsd.db"
+  'pidfile': "{{ nsd_dir_run }}/nsd.pid"
+  'xfrdfile': "{{ nsd_dir_state }}/xfrd.state"
+  'verbosity': 0
+  'ip-address': ['127.0.0.1']
+```
+To override onl part of the config you could use small trick with **combine** filter plugin.
+
+```
+nsd_conf_server_base:
+  'username': "{{ nsd_user }}"
+  'do-ip4': 'yes'
+  'do-ip6': 'no'
+  'hide-version': 'yes'
+  'zonesdir': "{{ nsd_dir_etc }}"
+  'database': "{{ nsd_dir_db }}/nsd.db"
+  'pidfile': "{{ nsd_dir_run }}/nsd.pid"
+  'xfrdfile': "{{ nsd_dir_state }}/xfrd.state"
+  'verbosity': 0
+  'ip-address': "{{ ansible_all_ipv4_addresses }} + {{ ['127.0.0.1'] }}"
+
+nsd_conf_server_host: {}
+
+nsd_conf_server: "{{ nsd_conf_server_base|combine(nsd_conf_server_host) }}"
+```
+# Dependencies
+
+```
+  roles:
+    - role: hudecof.packages
+      packages_centos_epel: True
+      packages_ubuntu_multiverse: True
+      packages_ubuntu_universe: True
+    - role: hudecof.filter-plugins
+```
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```
+- hosts: servers
+  roles:
+    - role: hudecof.packages
+      packages_centos_epel: True
+      packages_ubuntu_multiverse: True
+      packages_ubuntu_universe: True
+    - role: hudecof.filter-plugins
+    - role: hudecof.nsd
+      nsd_conf_keys:
+        test:
+          algorithm: hmac-sha256
+          secret: aaaaaabbbbbbccccccdddddd
+      nsd_conf_zones:
+        example.com:
+          include-pattern: test
+      nsd_conf_patterns:
+        test:
+          'zonefile': 'zones.d/%s'
+         'provide-xfr': ['0.0.0.0/0 test', '::0/0 test']
+      nsd_conf_server:
+        'username': "{{ nsd_user }}"
+        'do-ip4': 'yes'
+        'do-ip6': 'no'
+        'hide-version': 'yes'
+        'zonesdir': "{{ nsd_dir_etc }}"
+        'database': "{{ nsd_dir_db }}/nsd.db"
+        'pidfile': "{{ nsd_dir_run }}/nsd.pid"
+        'xfrdfile': "{{ nsd_dir_state }}/xfrd.state"
+        'verbosity': 0
+        'ip-address': ['127.0.0.1']
+```
+
 
 License
 -------
@@ -35,4 +143,5 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Peter Hudec
+CNC, a.s.
