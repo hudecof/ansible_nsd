@@ -1,8 +1,10 @@
 {{ ansible_managed | comment }}
 {% from '_helper_macros.j2' import config_value %}
 
+{% for key, value in nsd_conf_keys.items() %}
 key:
-{{ config_value('name', key.key, ident=1) -}}
-{% for key, value in key.value.items() %}
-{{ config_value(key, value, ident=1) -}}
+{{ config_value('name', key, ident=1) -}}
+{% for ck, cv in value.items() %}
+{{ config_value(ck, cv, ident=1) -}}
+{% endfor %}
 {% endfor %}

@@ -1,32 +1,15 @@
 {{ ansible_managed | comment }}
 
 #
-# put your custom configuration into the customm.d directory
+# put your custom configuration into the custom.conf file
 #
 
-# in older version of NSD4 the GLOG is not implemented
+# in older version of NSD4 the GLOB is not implemented
 # so we include files.
 
-# include server configuration
 include: {{ nsd_dir_etc }}/main.d/server.conf
-
-# include remote configuration
 include: {{ nsd_dir_etc }}/main.d/remote.conf
-
-# include TSIG keys
-{% for key, value in nsd_conf_keys.items() %}
-include: {{ nsd_dir_etc }}/main.d/key.{{ key }}
-{% endfor %}
-
-# include patterns
-{% for key, value in nsd_conf_patterns.items() %}
-include: {{ nsd_dir_etc }}/main.d/pattern.{{ key }}
-{% endfor %}
-
-# include zones
-{% for key, value in nsd_conf_zones.items() %}
-include: {{ nsd_dir_etc }}/main.d/zone.{{ key }}
-{% endfor %}
-
-# include custom configuration
-include: {{ nsd_dir_etc }}/nsd.conf.custom
+include: {{ nsd_dir_etc }}/main.d/key.conf
+include: {{ nsd_dir_etc }}/main.d/pattern.conf
+include: {{ nsd_dir_etc }}/main.d/zone.conf
+include: {{ nsd_dir_etc }}/main.d/custom.conf

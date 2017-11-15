@@ -2,47 +2,40 @@
 - name: "genarete keys configs"
   template:
     src: section_key.j2
-    dest: "{{ nsd_dir_etc }}/main.d/key.{{ key.key }}"
+    dest: "{{ nsd_dir_etc }}/main.d/key.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"
     backup: "{{ nsd_backup }}"
-  with_dict: "{{ nsd_conf_keys }}"
   notify:
     - test config nsd
     - restart nsd
-  loop_control:
-    loop_var: key
 
 - name: "genarete pattern configs"
   template:
     src: section_pattern.j2
-    dest: "{{ nsd_dir_etc}}/main.d/pattern.{{ pattern.key }}"
+    dest: "{{ nsd_dir_etc}}/main.d/pattern.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"
     backup: "{{ nsd_backup }}"
-  with_dict: "{{ nsd_conf_patterns }}"
   notify:
     - test config nsd
     - restart nsd
-  loop_control:
-    loop_var: pattern
+
 
 - name: "genarete zone configs"
   template:
     src: section_zone.j2
-    dest: "{{ nsd_dir_etc}}/main.d/zone.{{ zone.key }}"
+    dest: "{{ nsd_dir_etc}}/main.d/zone.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"
     backup: "{{ nsd_backup }}"
-  with_dict: "{{ nsd_conf_zones }}"
   notify:
     - test config nsd
     - restart nsd
-  loop_control:
-    loop_var: zone
+
 
 - name: "generate server config file"
   template:
@@ -71,7 +64,7 @@
 - name: "generate custom main config file"
   template:
     src: nsd.conf.custom.j2
-    dest: "{{ nsd_dir_etc}}/nsd.conf.custom"
+    dest: "{{ nsd_dir_etc}}/main.d/custom.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"
