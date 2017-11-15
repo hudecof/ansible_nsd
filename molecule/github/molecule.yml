@@ -32,7 +32,7 @@ provisioner:
     name: ansible-lint
   inventory:
     links:
-      group_vars: ../../../default/inventory/group_vars/
+      group_vars: ../../default/inventory/group_vars/
 scenario:
   name: github
 verifier:
