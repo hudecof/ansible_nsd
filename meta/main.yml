@@ -1,9 +1,8 @@
 ---
 galaxy_info:
+  role_name: nsd
   author: Peter Hudec
   description: nsd server setup
-  company: CNC, a.s.
-
   license: BSD
   min_ansible_version: 2.1
   platforms:
@@ -13,16 +12,16 @@ galaxy_info:
       - 7
   - name: Ubuntu
     versions:
-      - trusty
       - xenial
+      - bionic
   - name: Debian
     versions:
       - jessie
       - stretch
-
   galaxy_tags:
     - nsd
     - networking
+    - dns
 
 dependencies:
-  - "hudecof.filter-plugins"
+  - "hudecof.filter_plugins"
