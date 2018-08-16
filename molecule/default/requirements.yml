@@ -1,3 +1,3 @@
 ---
-- {src: hudecof.filter-plugins}
+- {src: hudecof.filter_plugins}
 - {src: hudecof.packages, packages_centos_epel: True, packages_ubuntu_multiverse: True}

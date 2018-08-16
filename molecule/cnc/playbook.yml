@@ -6,6 +6,6 @@
       packages_centos_epel: True
       packages_ubuntu_multiverse: True
       packages_ubuntu_universe: True
-    - role: hudecof.filter-plugins
+    - role: hudecof.filter_plugins
     - role: nsd
       nsd_test: True
