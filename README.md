@@ -2,26 +2,26 @@
 
 Install and configure NSD (dns) server.re.
 
-# Requirements
+## Requirements
 
 - **ansible** version minimal is **2.3**
 - role **hudecof.filter-plugins** adds some jinja filters
 - for **RedHat** based distribution  **EPEL** repository is needed
  
-# Role Variables
+## Role Variables
 
 All default variables are defined in the **defaults/main.yml**.
 
 **OS** specific variables are in **vars/os-<distribution>.yml** with `__` prefix. See **defaults** which could be overwritten.
 
-## General
+### General
 
 - `nsd_service_state` define service state, defaults to **started**
 - `nsd_service_enabled` define service enable state, defaults to **yes**
 - `nsd_backup` define wheather create config backup files, defaults to **False**
 - `nsd_test` dfine, whearther the role is in testing mode, defaults to **False**
 
-## OS spececific
+### OS spececific
 
 - `nsd_packages` list of packages to install/remove, defaults to **__nsd_packages**
 - `nsd_user` usename to run service under, defaults to **__nsd_user**
@@ -35,7 +35,7 @@ All default variables are defined in the **defaults/main.yml**.
 - `nsd_bin_check_conf` path to binary **nsd-checkconf**
 
 
-## Server Configuration
+### Server Configuration
 
 I will provide sample configuration. The dictionaty keys are configuration parameters for the NSD, so please see **nsd.conf(5)** maunal page.
 
@@ -85,7 +85,7 @@ nsd_conf_server_host: {}
 
 nsd_conf_server: "{{ nsd_conf_server_base|combine(nsd_conf_server_host) }}"
 ```
-# Dependencies
+## Dependencies
 
 ```
   roles:
@@ -93,11 +93,10 @@ nsd_conf_server: "{{ nsd_conf_server_base|combine(nsd_conf_server_host) }}"
       packages_centos_epel: True
       packages_ubuntu_multiverse: True
       packages_ubuntu_universe: True
-    - role: hudecof.filter-plugins
+    - role: hudecof.filter_plugins
 ```
 
-Example Playbook
-----------------
+## Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
@@ -108,7 +107,7 @@ Including an example of how to use your role (for instance, with variables passe
       packages_centos_epel: True
       packages_ubuntu_multiverse: True
       packages_ubuntu_universe: True
-    - role: hudecof.filter-plugins
+    - role: hudecof.filter_plugins
     - role: hudecof.nsd
       nsd_conf_keys:
         test:
@@ -135,13 +134,10 @@ Including an example of how to use your role (for instance, with variables passe
 ```
 
 
-License
--------
+## License
 
 BSD
 
-Author Information
-------------------
+## Author Information
 
 Peter Hudec
-CNC, a.s.
