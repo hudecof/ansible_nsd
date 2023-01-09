@@ -1,6 +1,6 @@
 ---
-- name: "genarete keys configs"
-  template:
+- name: "Genarete keys configs"
+  ansible.builtin.template:
     src: section_key.j2
     dest: "{{ nsd_dir_etc }}/main.d/key.conf"
     mode: 0640
@@ -11,10 +11,10 @@
     - test config nsd
     - restart nsd
 
-- name: "genarete pattern configs"
-  template:
+- name: "Genarete pattern configs"
+  ansible.builtin.template:
     src: section_pattern.j2
-    dest: "{{ nsd_dir_etc}}/main.d/pattern.conf"
+    dest: "{{ nsd_dir_etc }}/main.d/pattern.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"
@@ -23,11 +23,10 @@
     - test config nsd
     - restart nsd
 
-
-- name: "genarete zone configs"
-  template:
+- name: "Genarete zone configs"
+  ansible.builtin.template:
     src: section_zone.j2
-    dest: "{{ nsd_dir_etc}}/main.d/zone.conf"
+    dest: "{{ nsd_dir_etc }}/main.d/zone.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"
@@ -36,11 +35,10 @@
     - test config nsd
     - restart nsd
 
-
-- name: "generate server config file"
-  template:
+- name: "Generate server config file"
+  ansible.builtin.template:
     src: section_server.j2
-    dest: "{{ nsd_dir_etc}}/main.d/server.conf"
+    dest: "{{ nsd_dir_etc }}/main.d/server.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"
@@ -49,10 +47,10 @@
     - test config nsd
     - restart nsd
 
-- name: "generate remote config file"
-  template:
+- name: "Generate remote config file"
+  ansible.builtin.template:
     src: section_remote.j2
-    dest: "{{ nsd_dir_etc}}/main.d/remote.conf"
+    dest: "{{ nsd_dir_etc }}/main.d/remote.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"
@@ -61,22 +59,22 @@
     - test config nsd
     - restart nsd
 
-- name: "generate custom main config file"
-  template:
+- name: "Generate custom main config file"
+  ansible.builtin.template:
     src: nsd.conf.custom.j2
-    dest: "{{ nsd_dir_etc}}/main.d/custom.conf"
+    dest: "{{ nsd_dir_etc }}/main.d/custom.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"
-    force: no
+    force: false
   notify:
     - test config nsd
     - restart nsd
 
-- name: "generate main config file"
-  template:
+- name: "Generate main config file"
+  ansible.builtin.template:
     src: nsd.conf.j2
-    dest: "{{ nsd_dir_etc}}/nsd.conf"
+    dest: "{{ nsd_dir_etc }}/nsd.conf"
     mode: 0640
     owner: root
     group: "{{ nsd_user }}"

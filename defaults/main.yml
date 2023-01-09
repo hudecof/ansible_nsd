@@ -6,10 +6,10 @@ nsd_user: "{{ __nsd_user }}"
 nsd_group: "{{ __nsd_group }}"
 nsd_service: "{{ __nsd_service }}"
 nsd_service_state: started
-nsd_service_enabled: yes
+nsd_service_enabled: true
 
-nsd_backup: False
-nsd_test: False
+nsd_backup: false
+nsd_test: false
 
 nsd_dir_etc: "{{ __nsd_dir_etc }}"
 nsd_dir_db: " {{ __nsd_dir_db }}"

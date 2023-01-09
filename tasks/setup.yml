@@ -1,22 +1,24 @@
 ---
 
-- name: create directories
-  file:
-    path: "{{nsd_dir_etc}}/{{ directory }}"
+- name: "Create directories"
+  ansible.builtin.file:
+    path: "{{ nsd_dir_etc }}/{{ directory }}"
     state: directory
     owner: "{{ nsd_user }}"
     group: "{{ nsd_group }}"
     mode: 0750
-  with_items:
+  loop:
     - main.d
+    - conf.d
+    - server.d
   loop_control:
     loop_var: directory
 
-- name: check nsd-control
-  stat:
+- name: "Check nsd-control"
+  ansible.builtin.stat:
     path: '{{ nsd_dir_etc }}/nsd_control.key'
   register: control_key
 
-- name: init nsd-control
-  command: "{{ nsd_bin_control_setup }}"
+- name: "Init nsd-control"
+  ansible.builtin.command: "{{ nsd_bin_control_setup }}"
   when: not control_key.stat.exists

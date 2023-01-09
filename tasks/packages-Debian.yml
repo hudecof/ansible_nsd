@@ -1,8 +1,8 @@
 ---
-- name: "check packages (debian)"
-  apt:
+- name: "Check packages (debian)"
+  ansible.builtin.apt:
     pkg: "{{ package.name }}"
     state: "{{ package.state }}"
-  with_items: "{{ nsd_packages }}"
+  loop: "{{ nsd_packages }}"
   loop_control:
     loop_var: package
