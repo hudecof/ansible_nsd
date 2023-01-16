@@ -10,32 +10,44 @@
     - "os-{{ ansible_distribution }}.yml"
     - "os-{{ ansible_os_family }}.yml"
   tags:
-    - nsd
-    - nsd:package
-    - nsd:setup
-    - nsd:config
-    - nsd:service
+    - always
 
 - name: "Include package tasks"
-  ansible.builtin.include_tasks: packages-{{ ansible_os_family }}.yml
+  ansible.builtin.include_tasks:
+    file: packages-{{ ansible_os_family }}.yml
+    apply:
+      tags:
+        - nsd
+        - nsd:package
   tags:
-    - nsd
-    - nsd:package
+    - always
 
 - name: "Include setup tasks"
-  ansible.builtin.include_tasks: setup.yml
+  ansible.builtin.include_tasks:
+    file: setup.yml
+    apply:
+      tags:
+        - nsd
+        - nsd:setup
   tags:
-    - nsd
-    - nsd:setup
+    - always
 
 - name: "Include config tasks"
-  ansible.builtin.include_tasks: config.yml
+  ansible.builtin.include_tasks:
+    file:  config.yml
+    apply:
+      tags:
+        - nsd
+        - nsd:config
   tags:
-    - nsd
-    - nsd:config
+    - always
 
 - name: "Include service tasks"
-  ansible.builtin.include_tasks: service.yml
+  ansible.builtin.include_tasks:
+    file:  service.yml
+    apply:
+      tags:
+        - nsd
+        - nsd:service
   tags:
-    - nsd
-    - nsd:service
+    - always
